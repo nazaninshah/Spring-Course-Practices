@@ -1,0 +1,34 @@
+//first class
+package com.example.resttemaplate;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
+public class AppConfig {
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+}
+
+//second class
+@RestController
+public class UserController {
+    @Autowired
+    private RestTemplate restTemplate;
+    @GetMapping("/users")
+    public User[] getUser(){
+        String url = "https://jsonplaceholder.typicode.com/users";
+        User[] users= restTemplate.getForObject(url,User[].class);
+        for (User user : users) {
+            System.out.println("ID: " + user.getId());
+            System.out.println("Name: " + user.getName());
+            System.out.println("Username: " + user.getUsername());
+            System.out.println("Email: " + user.getEmail());
+            System.out.println("-------------------");
+        }
+        return users;
+    }
+
+}
